@@ -4,6 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/penko/Desktop/android/android1/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/penko/Desktop/android/android2-master/android2-master/app/src/main/res/drawable-v24/ic_liked_24.xml" value="0.2265" />
+        <entry key="..\:/Users/penko/Desktop/android/android2-master/android2-master/app/src/main/res/drawable/ic_like.xml" value="0.2265" />
+        <entry key="..\:/Users/penko/Desktop/android/android2-master/android2-master/app/src/main/res/drawable/ic_like_24dp.xml" value="0.2265" />
+        <entry key="..\:/Users/penko/Desktop/android/android2-master/android2-master/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/penko/Desktop/android/android2-master/android2-master/app/src/main/res/layout/card_post.xml" value="0.264" />
         <entry key="..\:/Users/penko/Desktop/android/android2/app/src/main/res/drawable-v24/ic_like_24.xml" value="0.23" />
         <entry key="..\:/Users/penko/Desktop/android/android2/app/src/main/res/drawable-v24/ic_liked_24.xml" value="0.23" />
         <entry key="..\:/Users/penko/Desktop/android/android2/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.234" />

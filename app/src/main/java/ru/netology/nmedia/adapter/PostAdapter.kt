@@ -45,11 +45,14 @@ class PostViewHolder(
             author.text = post.author
             published.text = post.published
             content.text = post.content
-            numberLikes.text = getFormatedNumber(post.likes.toLong())
-            numberShare.text = getFormatedNumber(post.share.toLong())
-            likes.setImageResource(
+            //numberLikes.text = getFormatedNumber(post.likes.toLong())
+            //numberShare.text = getFormatedNumber(post.share.toLong())
+            like.isChecked = post.likedByMe
+            like.text = "${getFormatedNumber(post.likes.toLong())}"
+            share.text = "${getFormatedNumber(post.share.toLong())}"
+           /* likes.setImageResource(
                 if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like
-            )
+            )*/
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
@@ -70,7 +73,7 @@ class PostViewHolder(
                     }
                 }.show()
             }
-            likes.setOnClickListener {
+            like.setOnClickListener {
                 onInteractionListener.onLike(post)
             }
             share.setOnClickListener {
