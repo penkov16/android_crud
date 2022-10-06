@@ -1,17 +1,15 @@
 package ru.netology.nmedia
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
+import ru.netology.nmedia.activity.PostResultContract
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.ActivityMainBinding
-import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.viewmodel.PostViewModel
-import kotlin.math.ln
-import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,10 +17,19 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         val viewModel: PostViewModel by viewModels()
+
         val adapter = PostsAdapter(object : OnInteractionListener{
+
+            override fun onVideo(post: Post) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=WhWc3b3KhnY"))
+                startActivity(intent)
+            }
+
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
+
             }
 
             override fun onLike(post: Post) {
@@ -35,6 +42,13 @@ class MainActivity : AppCompatActivity() {
 
             override fun onShare(post: Post) {
                 viewModel.shareById(post.id)
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, post.content)
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(intent, getString(R.string.chooser_share_post))
+                startActivity(shareIntent)
             }
         })
         binding.list.adapter = adapter
@@ -42,44 +56,20 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(posts)
         }
 
+        val activityLaunch = registerForActivityResult(PostResultContract()) { result ->
+            result ?: return@registerForActivityResult
+            viewModel.changeContentAndSave(result)
+        }
+
         viewModel.edited.observe(this) { post ->
             if (post.id == 0L) {
                 return@observe
             }
-            with(binding.content) {
-                binding.group.visibility = View.VISIBLE
-                requestFocus()
-                setText(post.content)
-            }
+            activityLaunch.launch(post.content)
         }
 
-        binding.cancel.setOnClickListener {
-            with(binding.content){
-                viewModel.save()
-                setText("")
-                clearFocus()
-                AndroidUtils.hideKeyboard(this)
-                binding.group.visibility = View.GONE
-            }
-        }
-
-        binding.save.setOnClickListener {
-            with(binding.content) {
-                if (text.isNullOrBlank()) {
-                    Toast.makeText(
-                        this@MainActivity,
-                        context.getString(R.string.error_empty_content),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-                viewModel.changeContent(text.toString())
-                viewModel.save()
-
-                setText("")
-                clearFocus()
-                AndroidUtils.hideKeyboard(this)
-            }
+        binding.fab.setOnClickListener {
+            activityLaunch.launch(null)
         }
 
     }
